@@ -6,6 +6,13 @@ Zero-telemetry cognitive privacy runner by Denis Yermakou / AxonOS.
 
 This repository is a browser-based game and engineering demonstrator for consent boundaries, replay proof export, and cognitive privacy UX. It is not a medical device, not a BCI diagnostic tool, and not a clinical product.
 
+
+## Run online
+
+Play the current GitHub Pages build:
+
+https://axonos-bci.github.io/axonos-boundary-run-v64/
+
 ## Run locally
 
 Open `index.html` in a modern browser or serve the folder with any static HTTP server.
