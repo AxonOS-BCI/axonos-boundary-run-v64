@@ -1,0 +1,7 @@
+dist/
+release-assets/
+dist_build1/
+dist_build2/
+.release-tmp/
+.DS_Store
+node_modules/

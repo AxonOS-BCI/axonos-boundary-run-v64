@@ -1,0 +1,150 @@
+name: Boundary Run v64 Pro CI — 57 Gates
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: gate-${{ matrix.gate.id }} — ${{ matrix.gate.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        gate:
+          - { id: '01', name: 'repository-shape' }
+          - { id: '02', name: 'version-file' }
+          - { id: '03', name: 'package-json' }
+          - { id: '04', name: 'readme-launch-link' }
+          - { id: '05', name: 'attribution-core' }
+          - { id: '06', name: 'donation-readme' }
+          - { id: '07', name: 'donation-file' }
+          - { id: '08', name: 'donation-runtime' }
+          - { id: '09', name: 'agpl-full-text' }
+          - { id: '10', name: 'commercial-license' }
+          - { id: '11', name: 'security-doc' }
+          - { id: '12', name: 'governance-doc' }
+          - { id: '13', name: 'contributing-doc' }
+          - { id: '14', name: 'code-of-conduct' }
+          - { id: '15', name: 'trademark-doc' }
+          - { id: '16', name: 'third-party-notices' }
+          - { id: '17', name: 'technical-spec' }
+          - { id: '18', name: 'traceability-matrix' }
+          - { id: '19', name: 'release-process' }
+          - { id: '20', name: 'release-notes' }
+          - { id: '21', name: 'html-csp' }
+          - { id: '22', name: 'html-referrer' }
+          - { id: '23', name: 'html-aria' }
+          - { id: '24', name: 'manifest' }
+          - { id: '25', name: 'css-present' }
+          - { id: '26', name: 'game-present' }
+          - { id: '27', name: 'no-fetch' }
+          - { id: '28', name: 'no-xhr' }
+          - { id: '29', name: 'no-websocket' }
+          - { id: '30', name: 'no-sendbeacon' }
+          - { id: '31', name: 'no-service-worker' }
+          - { id: '32', name: 'proof-sanitization' }
+          - { id: '33', name: 'crypto-try-catch' }
+          - { id: '34', name: 'touch-controls' }
+          - { id: '35', name: 'nan-guard' }
+          - { id: '36', name: 'frame-guard' }
+          - { id: '37', name: 'consent-withdrawn' }
+          - { id: '38', name: 'consent-suspended' }
+          - { id: '39', name: 'keyboard-controls' }
+          - { id: '40', name: 'colorblind-mode' }
+          - { id: '41', name: 'build-script' }
+          - { id: '42', name: 'package-script' }
+          - { id: '43', name: 'release-script-no-force-tag' }
+          - { id: '44', name: 'release-script-no-auto-install' }
+          - { id: '45', name: 'deploy-pages-branch-script' }
+          - { id: '46', name: 'dependabot-config' }
+          - { id: '47', name: 'botless-policy-doc' }
+          - { id: '48', name: 'no-deploy-pages-action' }
+          - { id: '49', name: 'no-workflow-write-permissions' }
+          - { id: '50', name: 'static-smoke' }
+          - { id: '51', name: 'python-audit' }
+          - { id: '52', name: 'verify-attribution' }
+          - { id: '53', name: 'verify-donation' }
+          - { id: '54', name: 'verify-no-sw' }
+          - { id: '55', name: 'reproducibility' }
+          - { id: '56', name: 'build-dist' }
+          - { id: '57', name: 'package-assets' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Run selected gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          GATE='${{ matrix.gate.id }}'
+          case "$GATE" in
+            01) test -f README.md && test -d src && test -d scripts && test -d docs ;;
+            02) test "$(tr -d '[:space:]' < VERSION)" = "64.0.0" ;;
+            03) node -e "JSON.parse(require('fs').readFileSync('package.json','utf8'))" ;;
+            04) grep -q 'https://axonos-bci.github.io/axonos-boundary-run-v64/' README.md ;;
+            05) bash scripts/verify_attribution.sh ;;
+            06) grep -q 'DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp' README.md ;;
+            07) grep -q 'DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp' DONATIONS.md ;;
+            08) grep -q 'DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp' index.html ;;
+            09) grep -q 'GNU AFFERO GENERAL PUBLIC LICENSE' LICENSE-AGPL && grep -q 'END OF TERMS AND CONDITIONS' LICENSE-AGPL ;;
+            10) test -s LICENSE-COMMERCIAL ;;
+            11) grep -q 'security@axonos.org' SECURITY.md ;;
+            12) test -s GOVERNANCE.md ;;
+            13) test -s CONTRIBUTING.md ;;
+            14) test -s CODE_OF_CONDUCT.md ;;
+            15) test -s TRADEMARK.md ;;
+            16) test -s THIRD_PARTY_NOTICES.md ;;
+            17) test -s docs/AxonOS_Boundary_Run_v64_Technical_Specification.md ;;
+            18) test -s docs/TRACEABILITY_MATRIX.md ;;
+            19) test -s docs/RELEASE_PROCESS.md ;;
+            20) test -s RELEASE_NOTES_v64.0.0.md ;;
+            21) grep -q 'Content-Security-Policy' index.html && grep -q 'frame-ancestors' index.html ;;
+            22) grep -q 'no-referrer' index.html ;;
+            23) grep -q 'aria-live' index.html ;;
+            24) node -e "JSON.parse(require('fs').readFileSync('src/manifest.json','utf8'))" ;;
+            25) test -s src/styles.css ;;
+            26) test -s src/game.js ;;
+            27) ! grep -RInE 'fetch\s*\(' index.html src ;;
+            28) ! grep -RIn 'XMLHttpRequest' index.html src ;;
+            29) ! grep -RIn 'WebSocket' index.html src ;;
+            30) ! grep -RIn 'sendBeacon' index.html src ;;
+            31) bash scripts/verify_no_sw.sh ;;
+            32) grep -Fq 'replace(/[^a-f0-9]/gi' src/game.js ;;
+            33) grep -q 'crypto.subtle.digest failed' src/game.js ;;
+            34) grep -q 'touchstart' src/game.js ;;
+            35) grep -q 'isNaN(state.x)' src/game.js ;;
+            36) grep -q 'Frame embedding blocked' src/game.js ;;
+            37) grep -q 'Withdrawn' src/game.js ;;
+            38) grep -q 'Suspended' src/game.js ;;
+            39) grep -q 'keydown' src/game.js ;;
+            40) grep -q 'colorblind' src/game.js ;;
+            41) bash scripts/build_web.sh dist-gate ;;
+            42) bash -n scripts/package_release.sh ;;
+            43) ! grep -E 'git tag -f|git tag -fa|git push -f origin' scripts/create_github_release_v64.sh ;;
+            44) ! grep -q 'pkg install' scripts/create_github_release_v64.sh ;;
+            45) test -s scripts/deploy_pages_branch.sh ;;
+            46) test -s .github/dependabot.yml ;;
+            47) test -s docs/BOTLESS_CONTRIBUTOR_POLICY.md ;;
+            48) ! grep -RIn 'actions/deploy-pages' .github/workflows ;;
+            49) ! grep -RIn 'contents: write' .github/workflows ;;
+            50) node qa/boundary-run-static-smoke-v64.mjs ;;
+            51) python3 tools/boundary_run_audit_v64.py ;;
+            52) bash scripts/verify_attribution.sh ;;
+            53) bash scripts/verify_donation_address.sh ;;
+            54) bash scripts/verify_no_sw.sh ;;
+            55) bash scripts/reproducibility_check.sh ;;
+            56) bash scripts/build_web.sh dist ;;
+            57) bash scripts/package_release.sh ;;
+          esac

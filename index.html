@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none';">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="AxonOS Boundary Run v64 — zero-telemetry cognitive privacy simulator created by Denis Yermakou.">
+<meta name="author" content="Denis Yermakou">
+<meta name="creator" content="Denis Yermakou">
+<meta name="theme-color" content="#05070a">
+<link rel="manifest" href="src/manifest.json">
+<title>AxonOS Boundary Run v64 — The Sovereign Signal</title>
+<style>
+/* Critical CSS inlined for first paint */
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#05070a;color:#eef3f8;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+body{background:radial-gradient(circle at 50% 0%,#182033 0,#05070a 58%)}
+.shell{width:min(1180px,96vw);margin:0 auto;padding:28px 0 44px}
+.hero{border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:28px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02));box-shadow:0 28px 80px rgba(0,0,0,.42)}
+.eyebrow{margin:0 0 10px;color:#c8ad6b;letter-spacing:.18em;text-transform:uppercase;font-size:12px}
+.hero h1{font-size:clamp(38px,8vw,82px);line-height:.9;margin:0}
+.subtitle{color:#b8c3cf;font-size:18px;max-width:780px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.hud div{border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.045)}
+.hud span{display:block;color:#8190a3;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+.hud strong{font-size:20px}
+.stage-wrap{position:relative;border:1px solid rgba(255,255,255,.14);border-radius:24px;overflow:hidden;background:#020408;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 30px 90px rgba(0,0,0,.55)}
+canvas{display:block;width:100%;height:auto;image-rendering:auto}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.controls button{border:1px solid rgba(255,255,255,.15);background:#101722;color:#f5f7fb;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer}
+.controls button:focus{outline:3px solid #c8ad6b;outline-offset:2px}
+.manual{border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px 22px;background:rgba(255,255,255,.035);color:#c9d3df}
+.manual h2{margin-top:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+@media(max-width:760px){.hud{grid-template-columns:repeat(2,1fr)}.hero{padding:22px}.controls button{flex:1 1 45%}}
+body.colorblind canvas{filter:saturate(.15) contrast(1.25)}
+.attribution{margin-top:18px;padding:14px 18px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.035);color:#aeb9c7;font-size:14px}
+.attribution strong{color:#f4f7fb}
+.donation-panel{margin:24px auto;max-width:960px;padding:18px 20px;border:1px solid rgba(212,175,55,.45);border-radius:18px;background:rgba(10,12,20,.86)}
+.donation-panel code{word-break:break-all;font-weight:700}
+.touch-hint{display:none}
+@media(hover:none) and (pointer:coarse){.touch-hint{display:block;color:#8190a3;font-size:13px;margin:8px 0}}
+</style>
+</head>
+<body>
+<div class="shell" role="main">
+  <section class="hero" aria-labelledby="title">
+    <p class="eyebrow">AxonOS Foundation Standard · Created by Denis Yermakou</p>
+    <h1 id="title">AxonOS Boundary Run v64</h1>
+    <p class="subtitle">The Sovereign Signal — cognitive privacy, consent boundaries, deterministic replay.</p>
+    <div class="hud" role="status" aria-live="polite">
+      <div><span>Integrity</span><strong id="integrity">100%</strong></div>
+      <div><span>Consent</span><strong id="consent">Granted</strong></div>
+      <div><span>Weather</span><strong id="weather">Clear</strong></div>
+      <div><span>Proof</span><strong id="proof">pending</strong></div>
+    </div>
+    <div class="stage-wrap" role="application" aria-label="Neural Boundary Field game stage">
+      <canvas id="game" width="960" height="540" aria-label="Game canvas. Use A/D or arrows to move, W/Up/Space to jump, S/Down to duck, P to pause, R to revoke consent, E to resume."></canvas>
+      <div class="touch-hint" aria-hidden="true">Touch left/right side to move. Touch upper area to jump, lower to duck.</div>
+    </div>
+    <div class="controls" role="toolbar" aria-label="Game controls">
+      <button id="start" type="button">Start Run</button>
+      <button id="pause" type="button">Pause</button>
+      <button id="colorblind" type="button">Colorblind Mode</button>
+      <button id="export" type="button">Export Proof</button>
+    </div>
+    <div id="live" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+    <div class="manual" role="region" aria-label="Game manual">
+      <h2>Codex</h2>
+      <p id="codex">Complete the first consent gate to unlock the Consent State Machine entry.</p>
+      <h2>Keyboard</h2>
+      <p>A/D or arrows move. W/↑/Space jumps. S/↓ ducks. R revokes consent. E requests resume after suspension. P pauses.</p>
+    </div>
+  </section>
+
+  <section class="donation-panel" aria-label="Direct donation">
+    <p>Support AxonOS Boundary Run v64 directly.</p>
+    <p><strong>Dogecoin:</strong> <code>DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp</code></p>
+    <p>See <a href="DONATIONS.md">DONATIONS.md</a> for the verified wallet record.</p>
+  </section>
+
+  <footer class="attribution">
+    <strong>Created by Denis Yermakou, Founder &amp; CEO of AxonOS.</strong><br>
+    Project: AxonOS Boundary Run v64 — The Sovereign Signal · <a href="https://axonos.org">axonos.org</a>
+  </footer>
+</div>
+<script src="src/game.js"></script>
+</body>
+</html>
