@@ -1,32 +1,12 @@
 {
   "name": "axonos-boundary-run-v64",
   "version": "64.0.0",
-  "description": "AxonOS Boundary Run v64 — The Sovereign Signal. Zero-telemetry cognitive privacy simulator created by Denis Yermakou.",
   "private": true,
-  "type": "module",
-  "author": "Denis Yermakou <wiser1707@gmail.com>",
-  "license": "AGPL-3.0-only OR AxonOS-Commercial",
-  "homepage": "https://axonos-bci.github.io/axonos-boundary-run-v64/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AxonOS-BCI/axonos-boundary-run-v64.git"
-  },
+  "description": "AxonOS Boundary Run v64 — static zero-telemetry cognitive privacy runner.",
   "scripts": {
-    "smoke": "node qa/boundary-run-static-smoke-v64.mjs",
-    "audit": "python3 tools/boundary_run_audit_v64.py",
-    "verify:no-sw": "bash scripts/verify_no_sw.sh",
-    "verify:donation": "bash scripts/verify_donation_address.sh",
-    "verify:attribution": "bash scripts/verify_attribution.sh",
-    "verify:repro": "bash scripts/reproducibility_check.sh",
-    "build": "bash scripts/build_web.sh dist",
-    "package": "bash scripts/package_release.sh"
+    "check:js": "node --check src/game.js",
+    "smoke": "node scripts/smoke-browser.js",
+    "test": "npm run check:js && npm run smoke"
   },
-  "keywords": [
-    "AxonOS",
-    "Denis Yermakou",
-    "BCI",
-    "cognitive privacy",
-    "zero telemetry",
-    "consent FSM"
-  ]
+  "license": "SEE LICENSE IN src/game.js"
 }
