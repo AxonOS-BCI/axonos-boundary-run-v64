@@ -2,27 +2,53 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  static-smoke:
+  verify:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        gate:
+          - attribution
+          - no-sw
+          - donation-address
+          - smoke-test
+          - audit
+          - reproducibility
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm test
-      - name: Check required files
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run verification
         run: |
-          test -f index.html
-          test -f VERSION
-          test -f src/game.js
-          test -f src/manifest.json
-          test "$(cat VERSION)" = "64.0.0"
-      - name: Reject patch artifacts
-        run: |
-          ! find . -type f \( -name '*.patch' -o -name '*.diff' \) | grep .
+          case ${{ matrix.gate }} in
+            attribution)
+              bash scripts/verify_attribution.sh
+              ;;
+            no-sw)
+              bash scripts/verify_no_sw.sh
+              ;;
+            donation-address)
+              bash scripts/verify_donation_address.sh
+              ;;
+            smoke-test)
+              node qa/boundary-run-static-smoke-v64.mjs
+              ;;
+            audit)
+              python3 tools/boundary_run_audit_v64.py
+              ;;
+            reproducibility)
+              bash scripts/reproducibility_check.sh
+              ;;
+          esac

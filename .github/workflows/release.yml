@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip tar
+      - name: Run all verifications
+        run: |
+          bash scripts/verify_attribution.sh
+          bash scripts/verify_no_sw.sh
+          bash scripts/verify_donation_address.sh
+          node qa/boundary-run-static-smoke-v64.mjs
+          python3 tools/boundary_run_audit_v64.py
+          bash scripts/reproducibility_check.sh
+      - name: Build release assets
+        run: |
+          bash scripts/package_release.sh
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets
+          path: release-assets/

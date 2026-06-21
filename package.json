@@ -1,12 +1,55 @@
 {
   "name": "axonos-boundary-run-v64",
   "version": "64.0.0",
-  "private": true,
-  "description": "AxonOS Boundary Run v64 — static zero-telemetry cognitive privacy runner.",
-  "scripts": {
-    "check:js": "node --check src/game.js",
-    "smoke": "node scripts/smoke-browser.js",
-    "test": "npm run check:js && npm run smoke"
+  "description": "AxonOS Boundary Run v64 — The Sovereign Signal. Zero-telemetry cognitive privacy simulator created by Denis Yermakou.",
+  "author": "Denis Yermakou <wiser1707@gmail.com>",
+  "license": "AGPL-3.0-only OR AxonOS-Commercial",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AxonOS-BCI/axonos-boundary-run-v64.git"
   },
-  "license": "SEE LICENSE IN src/game.js"
+  "homepage": "https://axonos-bci.github.io/axonos-boundary-run-v64/",
+  "bugs": {
+    "url": "https://github.com/AxonOS-BCI/axonos-boundary-run-v64/issues"
+  },
+  "keywords": [
+    "axonos",
+    "boundary-run",
+    "cognitive-privacy",
+    "consent",
+    "zero-telemetry",
+    "deterministic-replay",
+    "bci",
+    "neural-interface"
+  ],
+  "files": [
+    "index.html",
+    "src/",
+    "docs/",
+    "scripts/",
+    "qa/",
+    "tools/",
+    "README.md",
+    "VERSION",
+    "ATTRIBUTION.md",
+    "LICENSE-AGPL",
+    "LICENSE-COMMERCIAL",
+    "SECURITY.md",
+    "DONATIONS.md",
+    "THIRD_PARTY_NOTICES.md",
+    "TRADEMARK.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "bash scripts/build_web.sh",
+    "verify": "bash scripts/verify_attribution.sh && bash scripts/verify_no_sw.sh && bash scripts/verify_donation_address.sh",
+    "audit": "node qa/boundary-run-static-smoke-v64.mjs && python3 tools/boundary_run_audit_v64.py",
+    "repro": "bash scripts/reproducibility_check.sh",
+    "package": "bash scripts/package_release.sh",
+    "release": "bash scripts/create_github_release_v64.sh",
+    "pages": "bash scripts/deploy_pages_branch.sh"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
