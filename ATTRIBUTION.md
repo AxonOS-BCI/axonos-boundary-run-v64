@@ -1,10 +1,10 @@
 # Attribution
 
-**Creator, Founder, and Maintainer:** Denis Yermakou
-**Project:** AxonOS Boundary Run v64 — The Sovereign Signal
-**Organization:** AxonOS
-**Website:** https://axonos.org
-**Repository:** https://github.com/AxonOS-BCI/axonos-boundary-run-v64
+**Creator, Founder, and Maintainer:** Denis Yermakou  
+**Project:** AxonOS Boundary Run v64 — The Sovereign Signal  
+**Organization:** AxonOS  
+**Website:** https://axonos.org  
+**Repository:** https://github.com/AxonOS-BCI/axonos-boundary-run-v64  
 **Playable build:** https://axonos-bci.github.io/axonos-boundary-run-v64/
 
 Boundary Run v64 is published as an AxonOS Foundation Standard educational artifact. All public attribution, release metadata, package metadata, web metadata, and documentation should preserve the name **Denis Yermakou** unless the maintainer explicitly changes it.

@@ -1,55 +1,47 @@
 {
   "name": "axonos-boundary-run-v64",
   "version": "64.0.0",
-  "description": "AxonOS Boundary Run v64 — The Sovereign Signal. Zero-telemetry cognitive privacy simulator created by Denis Yermakou.",
-  "author": "Denis Yermakou <wiser1707@gmail.com>",
-  "license": "AGPL-3.0-only OR AxonOS-Commercial",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "smoke": "node qa/boundary-run-static-smoke-v64.mjs",
+    "audit": "python3 tools/boundary_run_audit_v64.py",
+    "build": "bash scripts/build_web.sh dist",
+    "verify:no-sw": "bash scripts/verify_no_sw.sh",
+    "verify:donations": "bash scripts/verify_donation_address.sh",
+    "repro": "bash scripts/reproducibility_check.sh",
+    "package:release": "bash scripts/package_release.sh",
+    "release:github": "bash scripts/create_github_release_v64.sh",
+    "verify:attribution": "bash scripts/verify_attribution.sh"
+  },
+  "description": "AxonOS Boundary Run v64 — zero-telemetry cognitive privacy simulator created by Denis Yermakou.",
+  "author": {
+    "name": "Denis Yermakou",
+    "email": "connect@axonos.org",
+    "url": "https://axonos.org"
+  },
+  "contributors": [
+    {
+      "name": "Denis Yermakou",
+      "email": "connect@axonos.org",
+      "url": "https://axonos.org"
+    }
+  ],
+  "homepage": "https://axonos-bci.github.io/axonos-boundary-run-v64/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AxonOS-BCI/axonos-boundary-run-v64.git"
+    "url": "git+https://github.com/AxonOS-BCI/axonos-boundary-run-v64.git"
   },
-  "homepage": "https://axonos-bci.github.io/axonos-boundary-run-v64/",
   "bugs": {
     "url": "https://github.com/AxonOS-BCI/axonos-boundary-run-v64/issues"
   },
+  "license": "AGPL-3.0-only OR LicenseRef-AxonOS-Commercial",
   "keywords": [
-    "axonos",
-    "boundary-run",
+    "AxonOS",
+    "BCI",
     "cognitive-privacy",
     "consent",
-    "zero-telemetry",
-    "deterministic-replay",
-    "bci",
-    "neural-interface"
-  ],
-  "files": [
-    "index.html",
-    "src/",
-    "docs/",
-    "scripts/",
-    "qa/",
-    "tools/",
-    "README.md",
-    "VERSION",
-    "ATTRIBUTION.md",
-    "LICENSE-AGPL",
-    "LICENSE-COMMERCIAL",
-    "SECURITY.md",
-    "DONATIONS.md",
-    "THIRD_PARTY_NOTICES.md",
-    "TRADEMARK.md",
-    "CHANGELOG.md"
-  ],
-  "scripts": {
-    "build": "bash scripts/build_web.sh",
-    "verify": "bash scripts/verify_attribution.sh && bash scripts/verify_no_sw.sh && bash scripts/verify_donation_address.sh",
-    "audit": "node qa/boundary-run-static-smoke-v64.mjs && python3 tools/boundary_run_audit_v64.py",
-    "repro": "bash scripts/reproducibility_check.sh",
-    "package": "bash scripts/package_release.sh",
-    "release": "bash scripts/create_github_release_v64.sh",
-    "pages": "bash scripts/deploy_pages_branch.sh"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+    "Denis Yermakou",
+    "zero-telemetry"
+  ]
 }

@@ -1,54 +1,39 @@
-name: CI
+# Attribution: Denis Yermakou
+name: Boundary Run v64 CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  static-audit:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        gate:
-          - attribution
-          - no-sw
-          - donation-address
-          - smoke-test
-          - audit
-          - reproducibility
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run verification
-        run: |
-          case ${{ matrix.gate }} in
-            attribution)
-              bash scripts/verify_attribution.sh
-              ;;
-            no-sw)
-              bash scripts/verify_no_sw.sh
-              ;;
-            donation-address)
-              bash scripts/verify_donation_address.sh
-              ;;
-            smoke-test)
-              node qa/boundary-run-static-smoke-v64.mjs
-              ;;
-            audit)
-              python3 tools/boundary_run_audit_v64.py
-              ;;
-            reproducibility)
-              bash scripts/reproducibility_check.sh
-              ;;
-          esac
+      - run: node qa/boundary-run-static-smoke-v64.mjs
+      - run: python3 tools/boundary_run_audit_v64.py
+      - run: bash scripts/verify_no_sw.sh
+      - run: bash scripts/verify_donation_address.sh
+      - run: bash scripts/verify_attribution.sh
+      - run: bash scripts/reproducibility_check.sh
+      - run: bash scripts/build_web.sh dist
+      - run: bash scripts/package_release.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: boundary-run-v64-dist
+          path: dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: boundary-run-v64-release-assets
+          path: release-assets

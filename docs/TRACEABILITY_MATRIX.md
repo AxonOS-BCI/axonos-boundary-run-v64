@@ -9,11 +9,8 @@
 | Audit Lane | Full audit trail | Replay proof export | `src/game.js` |
 | Sealed Vault | Privacy vault boundary | Integrity regeneration | `src/game.js` |
 | Quarantine/Suspension | Safe failure state | Consent reduction | `src/game.js` |
-| Replay Proof | Deterministic audit trace | SHA-256 proof payload | `src/game.js`, `tools/boundary_run_audit_v64.py` |
-| CSP Protection | Application boundary enforcement | Security posture | `index.html` |
-| Touch Controls | Multi-modal input accessibility | A11y compliance | `src/game.js` |
-| Screen Shake | Feedback for boundary violation | UX safety signal | `src/game.js` |
-| Particles | Visual confirmation of state change | Feedback integrity | `src/game.js` |
+| Replay Proof | Deterministic audit trace | SHA-256 proof payload | `src/game.js`, `tools/boundary_run_verify_v3.py` |
+
 
 ## Attribution
 

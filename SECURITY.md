@@ -6,17 +6,12 @@ Boundary Run v64 must not perform network communication during gameplay or proof
 
 Forbidden APIs in source and build output:
 
-- `fetch()`
+- `fetch(`
 - `XMLHttpRequest`
 - `WebSocket`
 - `sendBeacon`
 - service worker registration
 - external CDN script/style loading
-
-Additional protections:
-- CSP meta tag with `frame-ancestors 'none'` prevents clickjacking
-- Proof export filename is sanitized (hex-only)
-- Error handling for `crypto.subtle.digest` failures
 
 ## Reporting vulnerabilities
 
@@ -28,6 +23,7 @@ Coordinated disclosure target: 90 days.
 Initial response target: 72 hours.
 
 Do not include real neural data, private medical information, private keys, or secrets in an issue.
+
 
 ## Attribution
 

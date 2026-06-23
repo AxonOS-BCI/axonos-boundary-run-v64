@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Created by Denis Yermakou, Founder & CEO of AxonOS.
 set -euo pipefail
 
 VERSION="$(cat VERSION | tr -d '[:space:]')"
@@ -36,9 +35,16 @@ bash scripts/build_web.sh dist
 TMP=".release-tmp/${NAME}"
 rm -rf .release-tmp
 mkdir -p "$TMP"
-rsync -a ./ "$TMP"   --exclude '.git'   --exclude '.release-tmp'   --exclude 'release-assets'   --exclude 'dist'   --exclude 'dist_build1'   --exclude 'dist_build2'   --exclude '.DS_Store' >/dev/null 2>&1 || {
-  tar --exclude='.git' --exclude='.release-tmp' --exclude='release-assets' --exclude='dist' --exclude='dist_build1' --exclude='dist_build2' -cf - . | tar -xf - -C "$TMP"
-}
+rsync -a ./ "$TMP" \
+  --exclude '.git' \
+  --exclude '.release-tmp' \
+  --exclude 'release-assets' \
+  --exclude 'dist' \
+  --exclude 'dist_build1' \
+  --exclude 'dist_build2' \
+  --exclude '.DS_Store' >/dev/null 2>&1 || {
+    tar --exclude='.git' --exclude='.release-tmp' --exclude='release-assets' --exclude='dist' --exclude='dist_build1' --exclude='dist_build2' -cf - . | tar -xf - -C "$TMP"
+  }
 
 (
   cd .release-tmp

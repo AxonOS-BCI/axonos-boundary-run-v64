@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Created by Denis Yermakou, Founder & CEO of AxonOS.
 set -euo pipefail
 
 REQUIRED="Denis Yermakou"
 FILES=(
   README.md
   ATTRIBUTION.md
-  LICENSE-AGPL
+  package.json
   index.html
   src/game.js
   src/manifest.json
-  package.json
+  LICENSE-AGPL
+  RELEASE_NOTES_v64.0.0.md
 )
 
 for f in "${FILES[@]}"; do

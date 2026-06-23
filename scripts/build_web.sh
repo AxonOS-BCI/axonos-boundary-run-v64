@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Created by Denis Yermakou, Founder & CEO of AxonOS.
 set -euo pipefail
 OUT="${1:-dist}"
 rm -rf "$OUT"

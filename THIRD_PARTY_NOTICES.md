@@ -1,25 +1,15 @@
 # Third Party Notices
 
-AxonOS Boundary Run v64 has no runtime dependencies.
+This repository currently has no runtime third-party dependencies.
 
-All game logic, rendering, and physics are implemented in vanilla
-JavaScript without external libraries, frameworks, or CDN assets.
+Browser APIs used:
 
-## Build-time tools (not included in distribution)
+- HTML5 Canvas
+- Web Crypto API
+- DOM APIs
 
-- Node.js (smoke tests)
-- Python 3 (audit tools)
-- Bash (build scripts)
-- zip, tar, sha256sum (packaging)
+No external CDN assets are used.
 
-These tools are only used during development and release packaging
-and are not part of the runtime.
-
-## Fonts
-
-The game uses system fonts (Inter, ui-sans-serif, system-ui) which
-are already present on the user's device. No external font files
-are loaded.
 
 ## Attribution
 

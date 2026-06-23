@@ -1,29 +1,9 @@
 # Trademark Policy
 
-## AxonOS Trademarks
+AxonOS, the AxonOS name, and related visual marks are trademarks of the AxonOS Project.
 
-The following marks are trademarks of the AxonOS Project:
+You may use the marks for accurate nominative reference to this project. You may not imply endorsement, commercial partnership, or official status without written permission.
 
-- "AxonOS"
-- "AxonOS Boundary Run"
-- "The Sovereign Signal"
-- "Kibo"
-- "Ari"
-- "Neural Boundary Field"
-
-## Permitted Use
-
-You may use the AxonOS trademarks to:
-- Refer to the AxonOS project and its software
-- Indicate compatibility or interoperability
-- Link to the official repository or website
-
-## Prohibited Use
-
-You may NOT use the AxonOS trademarks to:
-- Imply endorsement by the AxonOS project
-- Create derivative brands that could cause confusion
-- Register domain names or social media handles that impersonate the project
 
 ## Attribution
 

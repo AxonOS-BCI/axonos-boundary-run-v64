@@ -4,36 +4,39 @@
 
 ### Added
 
-- CSP meta tag with `frame-ancestors 'none'` for clickjacking protection.
-- Mobile touch controls (touchstart/touchend on game stage).
-- Error handling in `finalizeProof()` for `crypto.subtle` failures.
-- Filename sanitization in proof export (hex-only filter).
-- NaN/state corruption detection in game loop.
-- `aria-live` regions for screen reader accessibility.
-- Touch control hints for mobile devices.
-- Screen shake effect on collision.
-- Particle effects on hits and vault collection.
-- Glow effect on hazard hits.
-- Combo counter for consecutive vaults.
-- Full player sprite (head, body, arms, legs, shadow, guardian halo).
-- Weather-tinted backgrounds (Storm, Solar Flare).
-- Hazard labels (GATE, VAULT, RAW).
-- All 5 hazard types now spawn correctly (vault was dead code before).
+- README direct launch link for the playable GitHub Pages build.
+- Repository-wide attribution metadata for Denis Yermakou.
+- Attribution verification script and CI check.
 
-### Fixed
+- Initial public Foundation Standard release for AxonOS Boundary Run v64.
+- Static playable browser game implementation.
+- Ari safe-intent courier gameplay loop.
+- Kibo guardian co-authorisation warning model.
+- Consent FSM representation: `Granted`, `Suspended`, `Withdrawn`.
+- Integrity-based failure model.
+- Neural Boundary Field zone system.
+- Neural Weather model.
+- Local replay proof export.
+- Colorblind mode toggle.
+- Screen-reader live region for warnings.
+- Full v64 technical specification under `docs/`.
+- Traceability matrix mapping game mechanics to AxonOS architecture concepts.
+- Security, governance, contributing, trademark, third-party notices, and donation documents.
+- Zero-telemetry audit tooling.
+- No-Service-Worker verification.
+- Donation-address integrity verification.
+- Reproducibility tree-hash check.
+- Release packaging script and SHA-256 asset manifest generation.
+- GitHub Release automation script.
+- CI workflow.
+- Tag-triggered release workflow.
+- GitHub Pages deployment workflow.
 
-- CRIT-004: Force-delete git tags → safe tag creation with existence checks.
-- CRIT-005: Auto-install `gh` CLI → fail-fast with clear error message.
-- CRIT-006: Unsanitized proof filename → hex-only sanitization.
-- CRIT-007: Missing CSP → added comprehensive CSP meta tag.
-- CRIT-009: Missing touch controls → added touch event handlers.
-- CRIT-014: Missing crypto error handling → wrapped in try/catch.
-- CRIT-015: Excessive attribution checks → reduced to 7 files.
-- CRIT-019: Spec/implementation mismatch → added Foundation vs Target table.
-- GAMEPLAY-001: Player sinking into floor → fixed body positioning.
-- GAMEPLAY-002: Vault never spawning → fixed spawnHazard type selection.
-- GAMEPLAY-003: Sluggish movement → increased acceleration (9000 vs 5600).
-- GAMEPLAY-004: Slow world speed → increased to 3.8 from 3.25.
+### Security
+
+- Runtime forbids `fetch()`, `XMLHttpRequest`, `WebSocket`, `navigator.sendBeacon`, and Service Worker registration.
+- Runtime is self-contained and does not depend on external CDN assets.
+- Donation address moved to `DONATIONS.md` and verified by script.
 
 ### Known limitations
 
@@ -41,14 +44,6 @@
 - Final Rust/WASM deterministic simulation core remains a roadmap target.
 - Formal Kani/fuzz/WCRT proof chain is not claimed complete in this Foundation release.
 
-## v52.0.0 — Foundation Standard — 2026-06-21
-
-### Added
-
-- Initial public Foundation Standard release for AxonOS Boundary Run.
-- Static playable browser game implementation.
-- Zero-telemetry audit tooling.
-- Release packaging and GitHub Release automation.
 
 ## Attribution
 

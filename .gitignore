@@ -1,12 +1,6 @@
-# AxonOS Boundary Run v64
-node_modules/
 dist/
-release-assets/
-.release-tmp/
 dist_build1/
 dist_build2/
+node_modules/
 .DS_Store
 *.log
-.env
-.vscode/
-.idea/

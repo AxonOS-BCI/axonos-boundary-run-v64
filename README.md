@@ -1,163 +1,91 @@
-# AxonOS Boundary Run v64 — The Sovereign Signal
+<div align="center">
 
-**▶ Launch Game**
-·
-**Download Release**
-·
-**Read Specification**
+# AxonOS Boundary Run
 
-**Foundation Standard Edition.** A zero-telemetry browser game and technical reference implementation for cognitive privacy, consent boundaries, deterministic replay proofs, and AxonOS-style safety semantics.
+### The quintessence of AxonOS — made playable.
 
-> Protect the choice. Protect the person.
+**A deterministic, replay-verifiable arcade game that turns the AxonOS thesis into something you can feel in your hands: keep typed intent flowing, keep raw signal out, and prove the whole run with cryptography.**
 
-## Launch directly from README
+[**▶ Play**](https://axonos-bci.github.io/axonos-boundary-run-v64/) · [axonos.org](https://axonos.org) · [The AxonOS Project](https://github.com/AxonOS-org)
 
-[▶ Play AxonOS Boundary Run v64](https://axonos-bci.github.io/axonos-boundary-run-v64/)
+</div>
 
-Fallback local launch:
+---
+
+> **What this is.** An **educational / brand artifact** — an interactive way to understand what AxonOS stands for. It is *not* a brain-computer interface, uses no neural data, and is **not** evidence of BCI functionality. It demonstrates the *philosophy and engineering posture* of AxonOS, not a clinical or product claim.
+
+## The quintessence it distills
+
+AxonOS exists to keep one promise: **applications receive typed, consent-bound intent — never raw neural signal — across a deterministic, auditable boundary.** This game makes each part of that promise tangible:
+
+| You experience… | …which is AxonOS' real capability |
+|:--|:--|
+| You pilot the **Sovereign Signal** — a single *typed intent* — through the field. | The application boundary: apps see typed `IntentObservation`, never raw streams. |
+| **Raw Signal** zones and **Artifacts** damage you; you dodge, or **dash-purge** through them. | The boundary rejects unrestricted raw cognition and degraded data. |
+| **Sealed Vaults** restore integrity and build combo. | Consent-granted, capability-gated operation. |
+| Stale **consent gates** suspend you (~3 s, scoring paused, auto-resume); integrity loss ends the run as **Withdrawn**. | The consent FSM — `Granted → Suspended → Withdrawn`, where **Withdrawn is terminal**. |
+| **FAST** band doubles score but drains; **AUDIT** band restores. | Operational modes under a real-time contract. |
+| Every run exports a **proof** whose hash is re-derived independently. | Determinism: the same inputs reproduce the same result, verifiably. |
+
+## Verifiable replay proof — the headline
+
+The simulation is fully deterministic: a fixed 60 Hz timestep, one seeded RNG, exact integer/IEEE-754 arithmetic, **no transcendental functions in the simulation**. Every run produces a canonical SHA-256 over `(seed, inputs, outcome)`.
+
+That proof is **independently re-simulated in a second language**: [`tools/boundary_run_verify_v3.py`](tools/boundary_run_verify_v3.py) replays an exported proof from its seed and input log and confirms the hash byte-for-byte. Tampered scores do not verify. This is the same determinism discipline the AxonOS kernel is built on, shrunk to something you can run in one command:
 
 ```bash
-python3 -m http.server 8080
-# open http://127.0.0.1:8080
+python3 tools/boundary_run_verify_v3.py my-run-proof.json
+# -> OK: replay proof verified by independent Python re-simulation
 ```
 
-## Direct Donation Wallet
+## How to play
 
-Support AxonOS Boundary Run v64 directly. The wallet is stored directly in this repository and verified by CI.
+- **Move:** arrow keys or **WASD** (**A/D** strafe, **W/S** vertical) — free 2-D movement.
+- **Dash:** `Shift` or `K` (two-finger tap on touch) — a burst with brief invulnerability; dash *through* a red Raw or purple Artifact to **purge** it for points and keep your combo. On a cooldown.
+- **Goal:** survive, bank Vaults, ride the FAST band for score, keep integrity above zero. Grab near-misses and chain combos; survive the **surge waves**.
+- **Pause:** `P`. **Colourblind mode** and **Export proof** are in the HUD. On mobile, drag to steer.
 
-```text
-Dogecoin: DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp
-```
+## Privacy
 
-## Attribution
-
-- **Creator / Founder / Maintainer:** Denis Yermakou
-- **Project:** AxonOS Boundary Run v64 — The Sovereign Signal
-- **Organization:** AxonOS
-- **Website:** https://axonos.org
-- **Repository:** https://github.com/AxonOS-BCI/axonos-boundary-run-v64
-- **Playable build:** https://axonos-bci.github.io/axonos-boundary-run-v64/
-
-Required attribution string:
-
-```text
-Created by Denis Yermakou, Founder & CEO of AxonOS.
-```
-
-## Status
-
-- Target release: `v64.0.0`
-- Repository class: public educational game / cognitive privacy simulator
-- Platform: static browser build, HTML5 Canvas, offline-first, no backend
-- License: `AGPL-3.0-only OR AxonOS Commercial License`
-- Specification: [`docs/AxonOS_Boundary_Run_v64_Technical_Specification.md`](docs/AxonOS_Boundary_Run_v64_Technical_Specification.md)
-- Attribution: [`ATTRIBUTION.md`](ATTRIBUTION.md)
-- Live game: [https://axonos-bci.github.io/axonos-boundary-run-v64/](https://axonos-bci.github.io/axonos-boundary-run-v64/)
-
-This repository currently contains a **static Foundation implementation** of the v64 game loop, replay proof, consent-state model, zero-network audit checks, governance files, release scaffolding, GitHub Pages-ready build layout, and creator attribution for **Denis Yermakou**. The long-term v64 target is Rust → WebAssembly with fixed-point deterministic simulation.
+Runs entirely in your browser. **No backend**, no accounts, no tracking — **zero-telemetry** by construction (verified in CI). The only network-free artifact you can produce is a local proof file you choose to share.
 
 ## Implementation Status
 
-| Component | v64.0.0 Foundation | Target Architecture |
-|-----------|-------------------|-------------------|
-| RNG | mulberry32 (JS) | ChaCha20 (WASM) |
-| Physics | JS float emulation | Fixed-point Q16.16 |
-| Runtime | JavaScript | Rust → WASM |
-| Proof | SHA-256 payload | Merkle tree + byte-exact replay |
-| Mobile | Touch controls (JS) | Native touch (WASM) |
+| Area | State |
+|:--|:--|
+| Deterministic engine + cross-language replay proof | Implemented, CI-verified (node ↔ Python) |
+| Gameplay (movement, dash-purge, combos, surge, bands, consent FSM) | Implemented |
+| Premium render (directional avatar, parallax, particles, glass HUD) | Implemented |
+| Privacy (no backend, zero-telemetry) | Implemented, CI-verified |
+| Relationship to the AxonOS kernel/SDK | Illustrative only — this is a brand/education artifact, not the product |
 
-## Game concept
-
-Ari is a safe-intent courier moving through the Neural Boundary Field. Kibo is a guardian co-authorisation mechanism, not a chatbot. Every zone is a policy decision:
-
-| Game element | AxonOS mapping |
-| --- | --- |
-| Ari | Safe-intent observation |
-| Kibo | Guardian co-authorisation |
-| Consent Gates | Granted → Suspended → Withdrawn FSM |
-| Raw Signal Zone | Simulated structural-privacy violation |
-| Audit Lane | Reproducible evidence and traceability |
-| Sealed Vault | Privacy-vault enforcement |
-| Quarantine | Safe failure state |
-
-## Controls
-
-- Move: `A/D` or `←/→`
-- Jump: `W`, `↑`, or `Space`
-- Duck: `S` or `↓`
-- Pause: `P`
-- Revoke consent: `R`
-- Resume after suspension: `E`
-- Export proof: button in UI
-
-**Mobile:** Touch left/right side of screen to move. Touch upper area to jump, lower to duck.
-
-## Security posture
-
-Boundary Run v64 is designed as a zero-telemetry educational artifact:
-
-- No `fetch()`
-- No `XMLHttpRequest`
-- No `WebSocket`
-- No `navigator.sendBeacon`
-- No analytics
-- No external CDN assets
-- No service worker
-- CSP headers enforced
-- Local-only replay proof export
-- Filename sanitization on export
-- Error handling for crypto.subtle failures
-
-### Why No Service Worker?
-
-Service Workers can intercept and modify all network requests, including those made by the game. In a zero-telemetry, zero-backend architecture, a compromised or malicious SW could inject analytics scripts, exfiltrate localStorage data, or serve modified binaries. Boundary Run v64 explicitly disables SW registration and includes a build-time check that fails if any SW code is present.
-
-Run the audit:
+## Build & verify locally
 
 ```bash
+bash scripts/build_web.sh dist          # build the static bundle
+bash scripts/reproducibility_check.sh   # deterministic rebuild check
+node  qa/boundary-run-static-smoke-v64.mjs
 python3 tools/boundary_run_audit_v64.py
-node qa/boundary-run-static-smoke-v64.mjs
-bash scripts/verify_no_sw.sh
-bash scripts/verify_donation_address.sh
 ```
 
-## Build
+CI runs a full gate suite on every push, including the determinism and zero-telemetry checks.
 
-```bash
-bash scripts/build_web.sh dist
-```
+## The real AxonOS
 
-This copies the static build into `dist/` and computes `SOURCE_MANIFEST.sha256`.
+This game is the front door, not the building. The engineering lives under [**AxonOS-org**](https://github.com/AxonOS-org): the [Standard](https://github.com/AxonOS-org/axonos-standard), the Rust `#![no_std]` [kernel](https://github.com/AxonOS-org/axonos-kernel), the [consent FSM](https://github.com/AxonOS-org/axonos-consent), the [SDKs](https://github.com/AxonOS-org/axonos-sdk), and a reproducible [end-to-end intent-flow demo](https://github.com/AxonOS-org/axonos-e2e-demo).
 
-## GitHub Pages
+## Support
 
-Set GitHub Pages to deploy with GitHub Actions. The included Pages workflow builds `dist/` and deploys the static browser game.
+This is an independent, open project. If it is useful to you, contributions are welcome (entirely optional):
 
-## Release
-
-Current release: **v64.0.0 — The Sovereign Signal**.
-
-Release package generation:
-
-```bash
-bash scripts/package_release.sh
-```
-
-Publish/update the GitHub Release:
-
-```bash
-bash scripts/create_github_release_v64.sh
-```
-
-Release notes: [`RELEASE_NOTES_v64.0.0.md`](RELEASE_NOTES_v64.0.0.md).
+- **Dogecoin:** `DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp`
 
 ## License
 
-Boundary Run v64 is dual-licensed at your option under:
+Dual-licensed: [AGPL-3.0-only](LICENSE-AGPL) for open use, or a [commercial license](LICENSE-COMMERCIAL). Created by **Denis Yermakou**.
 
-- **AGPL-3.0-only** for open-source distribution
-- **AxonOS Commercial License** for closed-source/commercial use
+---
 
-See [`LICENSE-AGPL`](LICENSE-AGPL), [`LICENSE-COMMERCIAL`](LICENSE-COMMERCIAL), [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), and [`ATTRIBUTION.md`](ATTRIBUTION.md).
-
-The AxonOS name and logo are trademarks of the AxonOS Project. Use of the trademark requires compliance with [`TRADEMARK.md`](TRADEMARK.md).
+<div align="center">
+<sub>© The AxonOS Project / Denis Yermakou · <a href="https://axonos.org">axonos.org</a> · connect@axonos.org · security@axonos.org</sub>
+</div>

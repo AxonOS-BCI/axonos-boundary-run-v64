@@ -1,88 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none';">
-<meta name="referrer" content="no-referrer">
-<meta name="description" content="AxonOS Boundary Run v64 — zero-telemetry cognitive privacy simulator created by Denis Yermakou.">
-<meta name="author" content="Denis Yermakou">
-<meta name="creator" content="Denis Yermakou">
-<meta name="theme-color" content="#05070a">
-<link rel="manifest" href="src/manifest.json">
-<title>AxonOS Boundary Run v64 — The Sovereign Signal</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#05070a;color:#eef3f8;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
-body{background:radial-gradient(circle at 50% 0%,#182033 0,#05070a 58%)}
-.shell{width:min(1180px,96vw);margin:0 auto;padding:28px 0 44px}
-.hero{border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:28px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02));box-shadow:0 28px 80px rgba(0,0,0,.42)}
-.eyebrow{margin:0 0 10px;color:#c8ad6b;letter-spacing:.18em;text-transform:uppercase;font-size:12px}
-.hero h1{font-size:clamp(38px,8vw,82px);line-height:.9;margin:0}
-.subtitle{color:#b8c3cf;font-size:18px;max-width:780px}
-.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
-.hud div{border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.045)}
-.hud span{display:block;color:#8190a3;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
-.hud strong{font-size:20px}
-.stage-wrap{position:relative;border:1px solid rgba(255,255,255,.14);border-radius:24px;overflow:hidden;background:#020408;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 30px 90px rgba(0,0,0,.55)}
-canvas{display:block;width:100%;height:auto;image-rendering:auto}
-.controls{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
-.controls button{border:1px solid rgba(255,255,255,.15);background:#101722;color:#f5f7fb;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s}
-.controls button:hover{background:#1a2330;border-color:rgba(255,255,255,.25)}
-.controls button:active{background:#0d121a}
-.controls button:focus{outline:3px solid #c8ad6b;outline-offset:2px}
-.manual{border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px 22px;background:rgba(255,255,255,.035);color:#c9d3df}
-.manual h2{margin-top:0}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
-@media(max-width:760px){.hud{grid-template-columns:repeat(2,1fr)}.hero{padding:22px}.controls button{flex:1 1 45%}}
-body.colorblind canvas{filter:saturate(.15) contrast(1.25)}
-.attribution{margin-top:18px;padding:14px 18px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.035);color:#aeb9c7;font-size:14px}
-.attribution strong{color:#f4f7fb}
-.donation-panel{margin:24px auto;max-width:960px;padding:18px 20px;border:1px solid rgba(212,175,55,.45);border-radius:18px;background:rgba(10,12,20,.86)}
-.donation-panel code{word-break:break-all;font-weight:700}
-.touch-hint{display:none;color:#8190a3;font-size:13px;margin:8px 0;text-align:center}
-@media(hover:none) and (pointer:coarse){.touch-hint{display:block}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'none'; font-src 'self'; manifest-src 'self'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#05070a" />
+  <meta name="description" content="AxonOS Boundary Run v64 — a playable, zero-telemetry cognitive-privacy game with a deterministic, independently verifiable replay proof. Created by Denis Yermakou." />
+  <meta name="author" content="Denis Yermakou" />
+  <meta name="creator" content="Denis Yermakou" />
+  <meta name="copyright" content="Copyright © 2026 Denis Yermakou / AxonOS" />
+  <meta property="og:title" content="AxonOS Boundary Run v64 — The Sovereign Signal" />
+  <meta property="og:description" content="Created by Denis Yermakou. Zero-telemetry cognitive-privacy game with a deterministic replay proof." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://axonos-bci.github.io/axonos-boundary-run-v64/" />
+  <title>AxonOS Boundary Run v64 — The Sovereign Signal</title>
+  <link rel="manifest" href="src/manifest.json" />
+  <link rel="stylesheet" href="src/styles.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AxonOS Boundary Run v64",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "creator": {"@type": "Person", "name": "Denis Yermakou"},
+    "author": {"@type": "Person", "name": "Denis Yermakou"},
+    "publisher": {"@type": "Organization", "name": "AxonOS"}
+  }
+  </script>
 </head>
 <body>
-<div class="shell" role="main">
-  <section class="hero" aria-labelledby="title">
-    <p class="eyebrow">AxonOS Foundation Standard · Created by Denis Yermakou</p>
-    <h1 id="title">AxonOS Boundary Run v64</h1>
-    <p class="subtitle">The Sovereign Signal — cognitive privacy, consent boundaries, deterministic replay.</p>
-    <div class="hud" role="status" aria-live="polite">
-      <div><span>Integrity</span><strong id="integrity">100%</strong></div>
-      <div><span>Consent</span><strong id="consent">Granted</strong></div>
-      <div><span>Weather</span><strong id="weather">Clear</strong></div>
-      <div><span>Proof</span><strong id="proof">pending</strong></div>
-    </div>
-    <div class="stage-wrap" role="application" aria-label="Neural Boundary Field game stage">
-      <canvas id="game" width="960" height="540" aria-label="Game canvas. Use A/D or arrows to move, W/Up/Space to jump, S/Down to duck, P to pause, R to revoke consent, E to resume."></canvas>
-      <div class="touch-hint" aria-hidden="true">Touch left/right side to move. Touch upper area to jump, lower to duck.</div>
-    </div>
-    <div class="controls" role="toolbar" aria-label="Game controls">
-      <button id="start" type="button">Start Run</button>
-      <button id="pause" type="button">Pause</button>
-      <button id="colorblind" type="button">Colorblind Mode</button>
-      <button id="export" type="button">Export Proof</button>
-    </div>
-    <div id="live" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
-    <div class="manual" role="region" aria-label="Game manual">
-      <h2>Codex</h2>
-      <p id="codex">Complete the first consent gate to unlock the Consent State Machine entry.</p>
-      <h2>Keyboard</h2>
-      <p>A/D or arrows move. W/↑/Space jumps. S/↓ ducks. R revokes consent. E requests resume after suspension. P pauses.</p>
-    </div>
-  </section>
+  <main class="shell" aria-label="AxonOS Boundary Run v64 game shell">
 
-  <section class="donation-panel" aria-label="Direct donation">
-    <p>Support AxonOS Boundary Run v64 directly. See <a href="DONATIONS.md">DONATIONS.md</a> for verified wallet address.</p>
-  </section>
+    <header class="hero" aria-labelledby="title">
+      <p class="eyebrow">◆ AxonOS Foundation Standard</p>
+      <h1 id="title">Boundary&nbsp;Run <span class="ver">v64</span></h1>
+      <p class="subtitle">The Sovereign Signal — a playable cognitive-privacy game whose every run carries a deterministic, independently verifiable replay proof. Created by Denis Yermakou.</p>
+      <div class="tags">
+        <span class="tag"><b>Deterministic</b> · SHA-256 verified</span>
+        <span class="tag"><b>Zero</b> telemetry</span>
+        <span class="tag"><b>Offline</b> · no backend</span>
+        <span class="tag"><b>Open</b> · AGPL</span>
+      </div>
+    </header>
 
-  <footer class="attribution">
-    <strong>Created by Denis Yermakou, Founder &amp; CEO of AxonOS.</strong><br>
-    Project: AxonOS Boundary Run v64 — The Sovereign Signal · <a href="https://axonos.org">axonos.org</a>
-  </footer>
-</div>
-<script src="src/game.js"></script>
+    <section class="hud" aria-label="Game status">
+      <div class="chip"><span>Integrity</span><strong id="integrity">100%</strong></div>
+      <div class="chip"><span>Consent</span><strong id="consent">Granted</strong></div>
+      <div class="chip"><span>Weather</span><strong id="weather">Clear</strong></div>
+      <div class="chip"><span>Proof</span><strong id="proof">pending</strong></div>
+    </section>
+
+    <section class="stage-wrap" aria-label="Play area">
+      <canvas id="game" width="960" height="540" role="img" aria-label="Boundary Run playable canvas"></canvas>
+      <div id="live" class="sr-only" aria-live="polite"></div>
+    </section>
+
+    <section class="controls" aria-label="Controls">
+      <button id="start" class="btn btn-primary" type="button">▶ Start / Restart</button>
+      <button id="pause" class="btn" type="button">⏸ Pause</button>
+      <button id="export" class="btn" type="button">⤓ Export Replay Proof</button>
+      <button id="colorblind" class="btn" type="button">◑ Colorblind Mode</button>
+    </section>
+
+    <section class="cards">
+      <article class="card" aria-label="How to play">
+        <h2>How to play</h2>
+        <ul class="how">
+          <li><strong>Move:</strong> Arrows or <kbd>WASD</kbd> (A/D, W/S) — free 2-D movement, no gravity.</li>
+          <li><strong>Dash:</strong> <kbd>Shift</kbd> or <kbd>K</kbd> — a burst with brief invulnerability. Dash <em>through</em> a red or purple threat to <strong>purge</strong> it for bonus points (your combo survives). On a cooldown.</li>
+          <li><strong>Dodge:</strong> red <em class="raw">Raw-Signal</em> (−18) and purple <em class="art">Artifacts</em> (−7). Slip past closely for a near-miss bonus.</li>
+          <li><strong>Collect:</strong> gold <em class="vault">Vaults</em> for integrity, score and combo streaks.</li>
+          <li><strong>Bands:</strong> green <em class="audit">Audit</em> restores integrity; amber <em class="fast">Fast</em> doubles score but drains it.</li>
+          <li><strong>Touch:</strong> drag to steer; two-finger tap to dash. <kbd>P</kbd> pauses; <kbd>Enter</kbd> restarts.</li>
+        </ul>
+      </article>
+
+      <article class="card" aria-label="AxonOS codex">
+        <h2>Codex</h2>
+        <p id="codex">Reach 600 distance to unlock the Consent State Machine entry.</p>
+        <p class="muted">Kibo is a guardian co-authorisation voice — the status line, not a chatbot. Every element maps to an AxonOS boundary concept.</p>
+      </article>
+    </section>
+
+    <section class="donation" aria-label="Direct donation wallet">
+      <h2>Support the project</h2>
+      <p class="muted">Direct Dogecoin donation — no processor, no tracking. Tap to copy the address.</p>
+      <button id="copy-doge" class="wallet" type="button" aria-label="Copy Dogecoin donation address to clipboard">
+        <span class="wallet-coin">Ð</span>
+        <code id="doge-addr">DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp</code>
+        <span class="wallet-copy" aria-hidden="true">Copy ⧉</span>
+      </button>
+      <span id="copy-note" class="copy-note" role="status" aria-live="polite"></span>
+    </section>
+
+    <footer class="attribution" aria-label="Project attribution">
+      <p><strong>Created by Denis Yermakou</strong>, Founder &amp; CEO of AxonOS. Boundary Run v64 is an AxonOS Foundation Standard educational artifact.</p>
+      <p class="muted">axonos.org · zero telemetry · offline-first · deterministic replay proof</p>
+    </footer>
+
+  </main>
+  <script src="src/game.js"></script>
 </body>
 </html>
