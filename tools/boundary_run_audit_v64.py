@@ -3,7 +3,7 @@
 from pathlib import Path
 import sys, re
 root = Path(__file__).resolve().parents[1]
-forbidden = [r"fetch\s*\(", r"XMLHttpRequest", r"WebSocket", r"sendBeacon", r"serviceWorker", r"navigator\.serviceWorker"]
+forbidden = [r"fetch\s*\(", r"XMLHttpRequest", r"WebSocket", r"EventSource", r"sendBeacon", r"serviceWorker", r"navigator\.serviceWorker", r"importScripts\s*\("]
 violations = []
 scan_roots = [root / "index.html", root / "src"]
 paths = []
@@ -30,18 +30,24 @@ print("OK: Boundary Run v64 static audit passed")
 
 # Hardening assertions added for v64 release blockers.
 def _hardening_assertions():
-    from pathlib import Path
+    # Explicit raises (not bare assert) so checks are NOT stripped under `python -O`.
     idx = Path("index.html").read_text(encoding="utf-8", errors="replace")
     game = Path("src/game.js").read_text(encoding="utf-8", errors="replace")
     rel = Path("scripts/create_github_release_v64.sh").read_text(encoding="utf-8", errors="replace")
     lic = Path("LICENSE-AGPL").read_text(encoding="utf-8", errors="replace")
-    assert "Content-Security-Policy" in idx
-    assert "no-referrer" in idx
-    assert "replace(/[^a-f0-9]/gi" in game
-    assert "WebCrypto SHA-256 unavailable" in game
-    assert "touchstart" in game
-    assert "git tag -fa" not in rel
-    assert "pkg install" not in rel
-    assert "GNU AFFERO GENERAL PUBLIC LICENSE" in lic
+    checks = [
+        ("CSP present", "Content-Security-Policy" in idx),
+        ("referrer no-referrer", "no-referrer" in idx),
+        ("proof hash sanitised", "replace(/[^a-f0-9]/gi" in game),
+        ("WebCrypto guard present", "WebCrypto SHA-256 unavailable" in game),
+        ("touch controls present", "touchstart" in game),
+        ("no force tag in release script", "git tag -fa" not in rel),
+        ("no auto-install in release script", "pkg install" not in rel),
+        ("full AGPL text present", "GNU AFFERO GENERAL PUBLIC LICENSE" in lic),
+    ]
+    failed = [name for name, ok in checks if not ok]
+    if failed:
+        print("FAIL: hardening checks failed:", ", ".join(failed), file=sys.stderr)
+        raise SystemExit(1)
 
 _hardening_assertions()

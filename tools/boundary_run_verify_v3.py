@@ -156,29 +156,71 @@ def canonical(s):
     return ("brv3:" + str(s["seed"]) + ":" + str(s["tick"]) + ":" + str(math.floor(s["score"])) +
             ":" + str(jsround(s["integrity"])) + ":" + s["consent"] + ":" + ",".join(str(m) for m in s["inputLog"]))
 
-def main():
-    ap = argparse.ArgumentParser(description="Verify a Boundary Run v64 replay proof by independent re-simulation.")
-    ap.add_argument("proof_json")
-    args = ap.parse_args()
-    with open(args.proof_json, "r", encoding="utf-8") as f:
+EXPECTED_SCHEMA = "boundary-run-replay-v3"
+MAX_TICKS = 60 * 60 * 30  # 30 minutes at 60 Hz — bounds verifier CPU/RAM
+
+def fail(msg):
+    print("FAIL:", msg, file=sys.stderr)
+    raise SystemExit(2)
+
+def is_int(v):
+    return isinstance(v, int) and not isinstance(v, bool)
+
+def verify_one(path):
+    with open(path, "r", encoding="utf-8") as f:
         proof = json.load(f)
-    for k in ("seed", "inputLog", "hash"):
-        if k not in proof:
-            print("FAIL: missing field", k); sys.exit(1)
-    log = [int(m) & 31 for m in proof["inputLog"]]
-    s = new_sim(int(proof["seed"]) & M32)
+    if proof.get("schema") != EXPECTED_SCHEMA:
+        fail(f"{path}: unsupported schema {proof.get('schema')!r} (expected {EXPECTED_SCHEMA!r})")
+    seed = proof.get("seed")
+    if not is_int(seed) or seed < 0 or seed > M32:
+        fail(f"{path}: seed must be an integer in 0..2^32-1")
+    raw = proof.get("inputLog")
+    if not isinstance(raw, list):
+        fail(f"{path}: inputLog must be an array")
+    if len(raw) > MAX_TICKS:
+        fail(f"{path}: inputLog too large ({len(raw)} > {MAX_TICKS})")
+    log = []
+    for i, m in enumerate(raw):
+        if not is_int(m):
+            fail(f"{path}: inputLog[{i}] is not an integer")
+        if m < 0 or m > 31:
+            fail(f"{path}: inputLog[{i}]={m} out of range 0..31 (reject, do not normalise)")
+        log.append(m)
+    if not isinstance(proof.get("hash"), str):
+        fail(f"{path}: missing or non-string hash")
+
+    s = new_sim(seed)
     for m in log:
         step_sim(s, m)
+
     got = hashlib.sha256(canonical(s).encode("utf-8")).hexdigest()
-    ok = (got == proof["hash"])
-    print("ticks      :", s["tick"], "(proof:", proof.get("ticks"), ")")
-    print("score      :", math.floor(s["score"]), "(proof:", proof.get("score"), ")")
-    print("integrity  :", jsround(s["integrity"]), "(proof:", proof.get("integrity"), ")")
-    print("consent    :", s["consent"], "(proof:", proof.get("consent"), ")")
-    print("hash match :", ok)
-    if not ok:
-        print("FAIL: re-simulated hash does not match proof"); print("  expected:", proof["hash"]); print("  got     :", got); sys.exit(1)
-    print("OK: replay proof verified by independent Python re-simulation")
+    if got != proof["hash"]:
+        fail(f"{path}: hash mismatch\n  expected: {proof['hash']}\n  got     : {got}")
+
+    # Strict: every declared outcome field must equal the independent re-simulation.
+    # This binds even fields that are not part of the canonical hash (e.g. bestCombo),
+    # so a proof with tampered metadata is rejected rather than silently accepted.
+    outcome = {
+        "ticks": s["tick"],
+        "score": math.floor(s["score"]),
+        "integrity": jsround(s["integrity"]),
+        "consent": s["consent"],
+        "bestCombo": s["bestCombo"],
+    }
+    for key, value in outcome.items():
+        if key in proof and proof[key] != value:
+            fail(f"{path}: {key} mismatch: proof={proof[key]} replay={value}")
+
+    print(f"OK: {path} — ticks {s['tick']}, score {outcome['score']}, "
+          f"integrity {outcome['integrity']}, consent {s['consent']}, hash {got[:16]}…")
+
+def main():
+    ap = argparse.ArgumentParser(description="Verify Boundary Run v64 replay proofs by independent re-simulation.")
+    ap.add_argument("proof_json", nargs="+", help="one or more proof JSON files")
+    args = ap.parse_args()
+    for path in args.proof_json:
+        verify_one(path)
+    print(f"OK: {len(args.proof_json)} proof(s) verified by independent Python re-simulation")
 
 if __name__ == "__main__":
     main()

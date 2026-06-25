@@ -1,5 +1,26 @@
 # Changelog
 
+## v64.1.0 — Verified Proof & Premium Pass — 2026-06-26
+
+### Added
+
+- Golden replay vectors (`qa/proofs/golden-{1,2,3}.json`) covering short, long, and minimal runs.
+- CI now verifies the deterministic replay proof on every push, cross-checked in **both** Python (`tools/boundary_run_verify_v3.py`) and JavaScript (`qa/replay_core_vectors.mjs`).
+- Top-level `LICENSE` (full AGPL-3.0 text) for automatic license detection.
+- On-canvas hazard telegraph, dash afterimage trail, and hit-punch feedback.
+
+### Changed
+
+- Replay verifier is now strict: it validates schema, seed range and input-mask range; **rejects** (does not silently normalise) out-of-range input; enforces a tick ceiling; and FAILS on any hash or outcome mismatch — including `bestCombo`, which is now re-simulated and bound.
+- Premium visual/UX pass: a restrained, coherent palette; a clean on-canvas HUD; a game-first page layout; quieter status messages.
+- CI gate runner (`pro_ci_gate.py`) now documents the real depth of each check and runs the proof gate.
+- Static-audit hardening checks use explicit raises (not bare `assert`, so they survive `python -O`); the telemetry scanner was broadened (`EventSource`, `importScripts`).
+- `URL.revokeObjectURL` is deferred so the proof download is not cancelled on slower devices.
+
+### Notes
+
+- The deterministic simulation core is unchanged **byte-for-byte**, so every replay proof exported by v64.0.0 still verifies.
+
 ## v64.0.0 — Foundation Standard — 2026-06-21
 
 ### Added

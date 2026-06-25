@@ -31,12 +31,12 @@ jobs:
           if [ "$EXISTS" = "0" ]; then
             gh release create "$TAG" release-assets/* \
               --title "AxonOS Boundary Run ${TAG#v} — The Sovereign Signal" \
-              --notes-file RELEASE_NOTES_v64.0.0.md \
+              --notes-file RELEASE_NOTES_v64.1.0.md \
               --latest
           else
             gh release upload "$TAG" release-assets/* --clobber
             gh release edit "$TAG" \
               --title "AxonOS Boundary Run ${TAG#v} — The Sovereign Signal" \
-              --notes-file RELEASE_NOTES_v64.0.0.md \
+              --notes-file RELEASE_NOTES_v64.1.0.md \
               --latest
           fi

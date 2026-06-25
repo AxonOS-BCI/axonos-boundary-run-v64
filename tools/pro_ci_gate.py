@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
-"""AxonOS Boundary Run v64 — 57 Pro CI gates.
+"""AxonOS Boundary Run v64 — CI gate runner.
 Created by Denis Yermakou, Founder & CEO of AxonOS.
+
+These are layered checks, not all of equal depth:
+  hygiene      — required files exist and key strings are present;
+  supply-chain — the release script has no force-push / auto-install;
+  proof        — the replay verifier re-simulates the golden vectors;
+  license      — full AGPL text and the dual-license files are present.
+The deep deterministic-replay verification runs in ci.yml against the golden
+vectors, cross-checked in BOTH JavaScript and Python. Usage: pro_ci_gate.py <name>.
 """
 from __future__ import annotations
 import re, subprocess, sys
@@ -22,7 +30,7 @@ def run(cmd: list[str]):
     subprocess.run(cmd, cwd=ROOT, check=True)
 
 def no_forbidden_network():
-    forbidden = ["fetch(", "XMLHttpRequest", "WebSocket", "navigator.sendBeacon", "analytics", "googletagmanager"]
+    forbidden = ["fetch(", "XMLHttpRequest", "WebSocket", "EventSource", "navigator.sendBeacon", "importScripts(", "analytics", "googletagmanager"]
     for path in ["index.html", "src/game.js", "src/styles.css"]:
         data = read(path)
         for f in forbidden:
@@ -64,7 +72,7 @@ def gate(name: str):
     elif name == "nan_guard": contains("src/game.js", "Number.isFinite")
     elif name == "touch_controls": contains("src/game.js", "touchstart")
     elif name == "foundation_status": contains("README.md", "Implementation Status")
-    elif name == "version_file": contains("VERSION", "64.0.0")
+    elif name == "version_file": contains("VERSION", "64.1.0")
     elif name == "license_files": [exists(x) for x in ["LICENSE-AGPL", "LICENSE-COMMERCIAL"]]
     elif name == "security_policy": contains("SECURITY.md", "security@axonos.org")
     elif name == "governance_doc": exists("GOVERNANCE.md")
@@ -90,7 +98,7 @@ def gate(name: str):
     elif name == "old_pages_removed":
         if (ROOT/".github/workflows/pages.yml").exists(): raise SystemExit("old pages.yml still present")
     elif name == "workflow_yaml_shape": exists(".github/workflows/pro-ci-57.yml")
-    elif name == "release_tag": contains("VERSION", "64.0.0")
+    elif name == "release_tag": contains("VERSION", "64.1.0")
     elif name == "launch_url": contains("README.md", LAUNCH)
     elif name == "zero_backend_claim": contains("README.md", "no backend")
     elif name == "privacy_claim": contains("README.md", "zero-telemetry")
@@ -105,6 +113,10 @@ def gate(name: str):
     elif name == "no_secrets":
         data = "\n".join(read(p) for p in ["index.html", "src/game.js", "package.json"])
         if re.search(r"(ghp_|github_pat_|AKIA[0-9A-Z]{16})", data): raise SystemExit("secret-like token found")
+    elif name == "replay_verify":
+        run(["python3", "tools/boundary_run_verify_v3.py",
+             "qa/proofs/golden-1.json", "qa/proofs/golden-2.json", "qa/proofs/golden-3.json"])
+    elif name == "replay_core_vectors": run(["node", "qa/replay_core_vectors.mjs"])
     elif name == "static_audit": run(["python3", "tools/boundary_run_audit_v64.py"])
     elif name == "static_smoke": run(["node", "qa/boundary-run-static-smoke-v64.mjs"])
     else: raise SystemExit(f"unknown gate: {name}")

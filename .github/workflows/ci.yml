@@ -23,6 +23,10 @@ jobs:
           python-version: '3.12'
       - run: node qa/boundary-run-static-smoke-v64.mjs
       - run: python3 tools/boundary_run_audit_v64.py
+      - name: Verify replay proofs (Python re-simulation)
+        run: python3 tools/boundary_run_verify_v3.py qa/proofs/golden-1.json qa/proofs/golden-2.json qa/proofs/golden-3.json
+      - name: Cross-check determinism (JavaScript core)
+        run: node qa/replay_core_vectors.mjs
       - run: bash scripts/verify_no_sw.sh
       - run: bash scripts/verify_donation_address.sh
       - run: bash scripts/verify_attribution.sh
